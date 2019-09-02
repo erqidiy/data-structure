@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#define N 16
-#define MAX_VAL 100
+#define N 10000
+#define MAX_VAL 1000000
 #define random(x) (rand() % x)
 
 void initArray(int ary[], int n) {
