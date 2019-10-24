@@ -1,7 +1,13 @@
+/*
+Filename: tournamentSort.c
+Author: erqitao
+Date: 2019-10-24
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#define TEAM_NUM 10
+#define TEAM_NUM 1024
 #define MAX_VALUE 32767
 #define random(x) (rand() % x)
 
@@ -58,13 +64,15 @@ int getWinner(int teams[], int n) {
 	i = t;
 	k = i / 2;
 
-	teams[t] = MAX_VALUE;
+	/* re-create the winner tree */
+	teams[t] = MAX_VALUE; // make teams[t] can not win in the next time
 	while (i > 1) {
 		j = rival(i);
 		k = i / 2;
 		teams[k] = winner(teams, n, i, j);
 		i = k;
 	}
+
 	return value;
 }
 
