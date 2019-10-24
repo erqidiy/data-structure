@@ -7,7 +7,7 @@ Date: 2019-10-24
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#define TEAM_NUM 1024
+#define TEAM_NUM 16 
 #define MAX_VALUE 32767
 #define random(x) (rand() % x)
 
@@ -15,7 +15,7 @@ void initArray(int ary[], int n) {
 	int i;
 	srand(time(NULL));
 	for (i = 0; i < n; i++)
-		ary[i] = random(random(128));
+		ary[i] = random(128);
 }
 
 void printArray(int ary[], int n) {
