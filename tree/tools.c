@@ -185,7 +185,7 @@ int heightOfTree(binTree root) {
 }
 
 /* Date: 2019-12-13 9:30 
- * Function: preOrder and inOrder No-Recursive-Traversal
+ * Function: No-Recursive-Traversal
 */
 
 void preOrderNoRecursive(binTree root) {
