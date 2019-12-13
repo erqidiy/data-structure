@@ -13,6 +13,61 @@ typedef struct seqQueue {
 	int front, rear;
 }seqQueue, *queue;
 
+typedef struct seqStack {
+	binTree data[MAX_SIZE];
+	int top;
+}seqStack, *stack;
+
+stack initStack() {
+	stack s = malloc(sizeof(seqStack));
+	s->top = -1;
+	
+	return s;
+}
+
+bool isStackEmpty(stack s) {
+	return s->top == -1;
+}
+
+bool isStackFull(stack s) {
+	return s->top == (MAX_SIZE -1);
+}
+
+bool push(stack s, binTree p) {
+	if (isStackFull(s)) {
+		puts("The stack is full.");
+		return false;
+	}
+
+	s->top += 1;
+	s->data[s->top] = p;
+
+	return true;
+}
+
+bool pop(stack s, binTree *p) {
+	if (isStackEmpty(s)) {
+		puts("The stack is empty.");
+		return false;
+	}
+
+	*p = s->data[s->top];
+	s->top -= 1;
+
+	return true;
+}
+
+bool getTop(stack s, binTree *p) {
+	if (isStackEmpty(s)) {
+		printf("The stack is empty. GetTop failed.");
+		return false;
+	}
+
+	*p = s->data[s->top];
+
+	return true;
+}
+
 void initTree(binTree *root, char ary[], int *index) {
 	if(ary[*index] == '#') {
 		*root = NULL;
@@ -129,6 +184,71 @@ int heightOfTree(binTree root) {
 	return (i > j) ? (i + 1) : (j + 1);
 }
 
+/* Date: 2019-12-13 9:30 
+ * Function: preOrder and inOrder No-Recursive-Traversal
+*/
+
+void preOrderNoRecursive(binTree root) {
+	stack s = initStack();
+	binTree p = root;
+
+	while (p != NULL || !isStackEmpty(s)) {
+		while (p != NULL) {
+			printf("%c\t", p->data);
+			push(s, p);
+			p = p->lchild;
+		}
+
+		pop(s, &p);
+		p = p->rchild;
+	}
+	putchar('\n');
+}
+
+void inOrderNoRecursive(binTree root) {
+	stack s = initStack();
+	binTree p = root;
+
+	while (p != NULL || !isStackEmpty(s)) {
+		while (p != NULL) {
+			push(s, p);
+			p = p->lchild;
+		}
+
+		pop(s, &p);
+		printf("%c\t", p->data);
+		p = p->rchild;
+	}
+	putchar('\n');
+}
+
+void postOrderNoRecursive(binTree root) {
+	stack s = initStack();
+	binTree p, pre;
+	p = root;
+	pre = NULL;
+
+	while (p != NULL || !isStackEmpty(s)) {
+		while (p != NULL) {
+			push(s, p);
+			p = p->lchild;
+		}
+
+		getTop(s, &p);
+
+		if (p->rchild != NULL && p->rchild != pre) {
+			p = p->rchild;
+		}else {
+			pop(s, &p);
+			printf("%c\t", p->data);
+			pre = p;
+			p = NULL;
+		}
+	}
+
+	putchar('\n');
+}
+
 int main() {
 	binTree root = NULL;
 	char ary[] = {'A', 'B', 'D', '#', '#', 'E', 'H', '#', '#', '#', 'C', 'F', '#', 'I', '#', '#', 'G', '#', '#'};
@@ -139,11 +259,19 @@ int main() {
 	printf("PreOrder: \t");
 	preOrder(root);
 
+	printf("\nPreOrderNR: \t");
+	preOrderNoRecursive(root);
+
 	printf("\nInOrder: \t");
 	inOrder(root);
 
+	printf("\nInOrderNR: \t");
+	inOrderNoRecursive(root);
+
 	printf("\nPostOrder: \t");
 	postOrder(root);
+	printf("\nPostOrderNR: \t");
+	postOrderNoRecursive(root);
 
 	printf("\nWidth of the tree: %d", widthOfTree(root));
 	printf("\nHeight of the tree: %d\n", heightOfTree(root));
